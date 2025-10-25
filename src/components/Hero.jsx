@@ -63,6 +63,19 @@ const Hero = () => {
     })
   }
 
+  const statVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.2 + 0.6, // Delay after main text animations
+        duration: 0.8,
+        ease: 'easeOut'
+      }
+    })
+  }
+
   return (
     <section className="relative h-screen w-full overflow-hidden">
       <video
@@ -110,6 +123,41 @@ const Hero = () => {
             Explore Properties
           </button>
         </motion.div>
+
+        {/* Statistics Section */}
+        <motion.div
+          className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-brand-light"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.8 // Start after main content
+              }
+            }
+          }}
+        >
+          <motion.div variants={statVariants} custom={0} className="flex flex-col items-center">
+            <div className="text-4xl font-bold text-brand-gold">
+              <Counter target={25} suffix={'+'} />
+            </div>
+            <p className="text-sm mt-1 uppercase tracking-wider">Years Experience</p>
+          </motion.div>
+          <motion.div variants={statVariants} custom={1} className="flex flex-col items-center">
+            <div className="text-4xl font-bold text-brand-gold">
+              <Counter target={150} suffix={'+'} />
+            </div>
+            <p className="text-sm mt-1 uppercase tracking-wider">Happy Clients</p>
+          </motion.div>
+          <motion.div variants={statVariants} custom={2} className="flex flex-col items-center">
+            <div className="text-4xl font-bold text-brand-gold">
+              <Counter target={75} suffix={'+'} />
+            </div>
+            <p className="text-sm mt-1 uppercase tracking-wider">Properties Sold</p>
+          </motion.div>
+        </motion.div>
+
       </div>
 
       <motion.div

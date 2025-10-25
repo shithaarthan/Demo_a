@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 
@@ -13,6 +13,20 @@ const navItems = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true)
+      } else {
+        setIsScrolled(false)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const menuVariants = {
     closed: {
@@ -31,9 +45,19 @@ const Navbar = () => {
     }
   }
 
+  const navbarVariants = {
+    transparent: { backgroundColor: "rgba(23, 23, 23, 0.5)", backdropFilter: "blur(8px)" },
+    scrolled: { backgroundColor: "rgba(23, 23, 23, 0.9)", backdropFilter: "blur(12px)" }
+  }
+
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-brand-dark/80 backdrop-blur-lg border-b border-brand-gold/20">
+      <motion.nav
+        variants={navbarVariants}
+        animate={isScrolled ? "scrolled" : "transparent"}
+        initial="transparent"
+        className="fixed top-0 left-0 right-0 z-50 border-b border-brand-gold/20"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             <div className="flex-shrink-0">
@@ -75,7 +99,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
       <AnimatePresence>
         {isOpen && (

@@ -67,8 +67,8 @@ const Properties = () => {
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
+    hidden: { opacity: 0, y: 50, scale: 0.95 },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: 'easeOut' } }
   }
 
   return (
@@ -112,22 +112,23 @@ const Properties = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.2 }}
           key={activeFilter}
         >
           {filteredProperties.map((property) => (
             <motion.div
               key={property.id}
-              className="group relative overflow-hidden rounded-lg shadow-lg"
+              className="group relative overflow-hidden rounded-lg shadow-lg aspect-w-16 aspect-h-9"
               variants={itemVariants}
+              whileHover={{ scale: 1.03, transition: { duration: 0.3 } }}
             >
               <img
                 src={property.image}
                 alt={property.name}
-                className="w-full h-96 object-cover group-hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-cover absolute inset-0"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent" />
-              <div className="absolute bottom-0 left-0 p-6 text-white">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent group-hover:from-black/90 transition-all duration-500" />
+              <div className="absolute bottom-0 left-0 p-6 text-white transform translate-y-0 group-hover:-translate-y-2 transition-transform duration-500">
                 <div className="flex items-center text-sm text-brand-light/80 mb-2">
                   <MapPin size={16} className="mr-2" />
                   <span>{property.location}</span>
@@ -135,7 +136,7 @@ const Properties = () => {
                 <h3 className="font-serif text-2xl font-bold mb-4">
                   {property.name}
                 </h3>
-                <a href="#" className="flex items-center text-brand-gold font-semibold group-hover:underline">
+                <a href="#" className="flex items-center text-brand-gold font-semibold opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all duration-500">
                   View Details
                   <ArrowRight size={18} className="ml-2 transform group-hover:translate-x-1 transition-transform" />
                 </a>
